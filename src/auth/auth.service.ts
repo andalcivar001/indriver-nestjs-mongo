@@ -103,19 +103,11 @@ export class AuthService {
 
     const userObj = userFound.toObject();
     const { password, ...userWithoutPassword } = userObj;
-    const roles = (userFound.roles ?? []).map((role) => {
-      if (role && typeof role === 'object' && 'toObject' in role) {
-        return (role as any).toObject();
-      }
-      return role;
-    });
 
     return {
       user: {
         ...userWithoutPassword,
-        roles,
       },
-      roles,
       token: 'Bearer ' + token,
     };
   }

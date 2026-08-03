@@ -21,6 +21,17 @@ export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
   //OnGatewayDisconnect: Se ejecuta cuando un cliente se desconecta del gateway de sockets.
   handleDisconnect(client: Socket) {
     console.log(`Cliente desconectado de SOCKET IO: ${client.id}`);
+
+    // Detecta cuándo se cierra la conexión subyacente.
+    client.conn.on('close', (reason) => {
+      console.log(`Conexión cerrada: ${client.id}`);
+      console.log(`Motivo del cierre: ${reason}`);
+    });
+
+    // Detecta errores del transporte.
+    client.conn.on('error', (error) => {
+      console.error(`Error de conexión: ${client.id}`, error);
+    });
   }
 
   //OnGatewayConnection: Se ejecuta cuando un cliente se conecta al gateway de sockets.

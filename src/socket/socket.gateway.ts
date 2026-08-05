@@ -16,8 +16,7 @@ import { Server, Socket } from 'socket.io';
   transports: ['websocket'],
 })
 export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
-  @WebSocketServer()
-  server: Server;
+  @WebSocketServer() server: Server;
 
   handleConnection(client: Socket) {
     console.log(`Cliente conectado de Socket.IO: ${client.id}`);
@@ -37,19 +36,16 @@ export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   @SubscribeMessage('message')
-  handleMessage(@ConnectedSocket() client: Socket, @MessageBody() data: any) {
+  handleMessage(@MessageBody() data: any) {
     console.log('Nuevo mensaje:', data);
-    client.emit('new_message', 'Bien, gracias');
+    this.server.emit('new_message', 'Bien, gracias');
   }
 
   @SubscribeMessage('change_driver_position')
-  handleChangeDriverPosition(
-    @ConnectedSocket() client: Socket,
-    @MessageBody() data: any,
-  ) {
+  handleChangeDriverPosition(@MessageBody() data: any) {
     console.log('Nueva posición:', data);
 
-    client.emit('new_driver_position', {
+    this.server.emit('new_driver_position', {
       id: data.id,
       lat: data.lat,
       lng: data.lng,

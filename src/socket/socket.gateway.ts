@@ -42,10 +42,14 @@ export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   @SubscribeMessage('change_driver_position')
-  handleChangeDriverPosition(@MessageBody() data: any) {
+  handleChangeDriverPosition(
+    @ConnectedSocket() client: Socket,
+    @MessageBody() data: any,
+  ) {
     console.log('Nueva posición:', data);
 
     this.server.emit('new_driver_position', {
+      id_socket: client.id,
       id: data.id,
       lat: data.lat,
       lng: data.lng,

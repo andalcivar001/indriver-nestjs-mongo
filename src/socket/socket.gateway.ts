@@ -33,6 +33,9 @@ export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   handleDisconnect(client: Socket) {
     console.log(`Cliente desconectado de Socket.IO: ${client.id}`);
+    this.server.emit('driver_disconnected', {
+      id_socket: client.id,
+    });
   }
 
   @SubscribeMessage('message')

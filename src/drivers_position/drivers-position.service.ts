@@ -1,0 +1,92 @@
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model, Types } from 'mongoose';
+import { CreateDriversPositionDto } from './dto/create-drivers-position.dto';
+import { UpdateDriversPositionDto } from './dto/update-drivers-position.dto';
+import { NearbyDriversDto } from './dto/nearby-drivers.dto';
+import {
+  DriversPosition,
+  DriversPositionDocument,
+} from './schemas/drivers-position.schema';
+
+@Injectable()
+export class DriversPositionService {
+  constructor(
+    @InjectModel(DriversPosition.name)
+    private readonly driversPositionModel: Model<DriversPositionDocument>,
+  ) {}
+
+  async create(
+    dto: CreateDriversPositionDto,
+  ): Promise<DriversPositionDocument> {
+    try {
+      return await this.driversPositionModel.create({
+        id_driver: dto.id_driver,
+        position: {
+          type: 'Point',
+          coordinates: [dto.lng, dto.lat],
+        },
+      });
+    } catch (error: unknown) {
+      this.handleDuplicateKey(error);
+      throw error;
+    }
+  }
+
+  async getNearbyDrivers(location: NearbyDriversDto) {
+    return this.driversPositionModel.aggregate([
+      {
+        $geoNear: {
+          near: {
+            type: 'Point',
+            coordinates: [location.longitud, location.latitud],
+          },
+          key: 'position',
+          distanceField: 'distance',
+          maxDistance: 10000,
+          spherical: true,
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          id_driver: { $toString: '$id_driver' },
+          position: {
+            lat: { $arrayElemAt: ['$position.coordinates', 1] },
+            lng: { $arrayElemAt: ['$position.coordinates', 0] },
+          },
+          distance: 1,
+        },
+      },
+    ]);
+  }
+
+  async removeByDriverId(idDriver: string): Promise<DriversPositionDocument> {
+    const driverPosition = await this.driversPositionModel
+      .findOneAndDelete({ id_driver: idDriver })
+      .exec();
+
+    if (!driverPosition) {
+      throw new NotFoundException('Posición del conductor no encontrada');
+    }
+
+    return driverPosition;
+  }
+
+  private handleDuplicateKey(error: unknown): void {
+    if (
+      typeof error === 'object' &&
+      error !== null &&
+      'code' in error &&
+      error.code === 11000
+    ) {
+      throw new ConflictException(
+        'El conductor ya tiene una posición registrada',
+      );
+    }
+  }
+}

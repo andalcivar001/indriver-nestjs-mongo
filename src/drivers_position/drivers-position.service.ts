@@ -4,9 +4,8 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, Types } from 'mongoose';
+import { Model } from 'mongoose';
 import { CreateDriversPositionDto } from './dto/create-drivers-position.dto';
-import { UpdateDriversPositionDto } from './dto/update-drivers-position.dto';
 import { NearbyDriversDto } from './dto/nearby-drivers.dto';
 import {
   DriversPosition,
@@ -24,13 +23,33 @@ export class DriversPositionService {
     dto: CreateDriversPositionDto,
   ): Promise<DriversPositionDocument> {
     try {
-      return await this.driversPositionModel.create({
-        id_driver: dto.id_driver,
-        position: {
-          type: 'Point',
-          coordinates: [dto.lng, dto.lat],
-        },
-      });
+      const driverPosition = await this.driversPositionModel
+        .findOneAndUpdate(
+          { id_driver: dto.id_driver },
+          {
+            $set: {
+              position: {
+                type: 'Point',
+                coordinates: [dto.lng, dto.lat],
+              },
+            },
+          },
+          {
+            upsert: true, // si no existe lo inserta caso contrario lo actualiza
+            new: true,
+            runValidators: true,
+            setDefaultsOnInsert: true,
+          },
+        )
+        .exec();
+
+      if (!driverPosition) {
+        throw new NotFoundException(
+          'No se pudo guardar la posición del conductor',
+        );
+      }
+
+      return driverPosition;
     } catch (error: unknown) {
       this.handleDuplicateKey(error);
       throw error;

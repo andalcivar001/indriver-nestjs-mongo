@@ -7,6 +7,7 @@ import { RolesModule } from './roles/roles.module';
 import { SocketModule } from './socket/socket.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { DriversPositionModule } from './drivers_position/drivers-position.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { AppService } from './app.service';
     UsersModule,
     RolesModule,
     SocketModule,
+    DriversPositionModule,
   ],
   controllers: [AppController],
   providers: [AppService],

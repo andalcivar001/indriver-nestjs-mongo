@@ -8,7 +8,6 @@ import { SocketModule } from './socket/socket.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CityModule } from './city/city.module';
-import { DriversPositionModule } from './drivers_position/drivers-position.module';
 
 @Module({
   imports: [
@@ -24,7 +23,6 @@ import { DriversPositionModule } from './drivers_position/drivers-position.modul
     RolesModule,
     SocketModule,
     CityModule,
-    DriversPositionModule,
   ],
   controllers: [AppController],
   providers: [AppService],

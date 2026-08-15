@@ -7,7 +7,6 @@ import { RolesModule } from './roles/roles.module';
 import { SocketModule } from './socket/socket.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { CityModule } from './city/city.module';
 
 @Module({
   imports: [
@@ -22,7 +21,6 @@ import { CityModule } from './city/city.module';
     UsersModule,
     RolesModule,
     SocketModule,
-    CityModule,
   ],
   controllers: [AppController],
   providers: [AppService],

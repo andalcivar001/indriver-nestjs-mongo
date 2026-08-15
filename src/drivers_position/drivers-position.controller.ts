@@ -31,6 +31,6 @@ export class DriversPositionController {
 
   @Delete('driver/:idDriver')
   removeByDriverId(@Param('idDriver', ParseMongoIdPipe) idDriver: string) {
-    return this.driversPositionService.removeByDriverId(idDriver);
+    //return this.driversPositionService.removeByDriverId(idDriver);
   }
 }

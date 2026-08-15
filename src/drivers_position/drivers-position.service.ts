@@ -101,28 +101,28 @@ export class DriversPositionService {
   //     .exec();
   // }
 
-  async removeByDriverId(idDriver: string): Promise<DriversPositionDocument> {
-    const driverPosition = await this.driversPositionModel
-      .findOneAndDelete({ id_driver: idDriver })
-      .exec();
+  // async removeByDriverId(idDriver: string): Promise<DriversPositionDocument> {
+  //   const driverPosition = await this.driversPositionModel
+  //     .findOneAndDelete({ id_driver: idDriver })
+  //     .exec();
 
-    if (!driverPosition) {
-      throw new NotFoundException('Posición del conductor no encontrada');
-    }
+  //   if (!driverPosition) {
+  //     throw new NotFoundException('Posición del conductor no encontrada');
+  //   }
 
-    return driverPosition;
-  }
+  //   return driverPosition;
+  // }
 
-  private handleDuplicateKey(error: unknown): void {
-    if (
-      typeof error === 'object' &&
-      error !== null &&
-      'code' in error &&
-      error.code === 11000
-    ) {
-      throw new ConflictException(
-        'El conductor ya tiene una posición registrada',
-      );
-    }
-  }
+  // private handleDuplicateKey(error: unknown): void {
+  //   if (
+  //     typeof error === 'object' &&
+  //     error !== null &&
+  //     'code' in error &&
+  //     error.code === 11000
+  //   ) {
+  //     throw new ConflictException(
+  //       'El conductor ya tiene una posición registrada',
+  //     );
+  //   }
+  // }
 }

@@ -99,17 +99,17 @@ export class DriversPositionService {
   //     .exec();
   // }
 
-  // async removeByDriverId(idDriver: string) {
-  //   const driverPosition = await this.driversPositionModel
-  //     .findOneAndDelete({ id_driver: idDriver })
-  //     .exec();
+  async removeByDriverId(idDriver: string) {
+    const driverPosition = await this.driversPositionModel
+      .findOneAndDelete({ id_driver: idDriver })
+      .exec();
 
-  //   if (!driverPosition) {
-  //     throw new NotFoundException('Posición del conductor no encontrada');
-  //   }
+    if (!driverPosition) {
+      throw new NotFoundException('Posición del conductor no encontrada');
+    }
 
-  //   return driverPosition;
-  // }
+    return driverPosition;
+  }
 
   // private handleDuplicateKey(error: unknown): void {
   //   if (

@@ -26,7 +26,7 @@ export class DriversPositionController {
 
   @Get('nearby/:latitud/:longitud')
   getNearbyDrivers(@Param() location: NearbyDriversDto) {
-    //  return this.driversPositionService.getNearbyDrivers(location);
+    return this.driversPositionService.getNearbyDrivers(location);
   }
 
   @Delete('driver/:idDriver')

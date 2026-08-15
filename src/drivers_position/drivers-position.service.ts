@@ -54,50 +54,50 @@ export class DriversPositionService {
     }
   }
 
-  // async getNearbyDrivers(location: NearbyDriversDto) {
-  //   return this.driversPositionModel
-  //     .aggregate([
-  //       {
-  //         $geoNear: {
-  //           near: {
-  //             type: 'Point',
-  //             coordinates: [
-  //               Number(location.longitud),
-  //               Number(location.latitud),
-  //             ],
-  //           },
-  //           key: 'position',
-  //           distanceField: 'distance',
-  //           maxDistance: 10000,
-  //           spherical: true,
-  //         },
-  //       },
+  async getNearbyDrivers(location: NearbyDriversDto) {
+    return this.driversPositionModel
+      .aggregate([
+        {
+          $geoNear: {
+            near: {
+              type: 'Point',
+              coordinates: [
+                Number(location.longitud),
+                Number(location.latitud),
+              ],
+            },
+            key: 'position',
+            distanceField: 'distance',
+            maxDistance: 10000,
+            spherical: true,
+          },
+        },
 
-  //       // Muy importante: limitar resultados
-  //       {
-  //         $limit: 20,
-  //       },
+        // Muy importante: limitar resultados
+        {
+          $limit: 20,
+        },
 
-  //       {
-  //         $project: {
-  //           _id: 0,
-  //           id_driver: {
-  //             $toString: '$id_driver',
-  //           },
-  //           position: {
-  //             lat: {
-  //               $arrayElemAt: ['$position.coordinates', 1],
-  //             },
-  //             lng: {
-  //               $arrayElemAt: ['$position.coordinates', 0],
-  //             },
-  //           },
-  //           distance: 1,
-  //         },
-  //       },
-  //     ])
-  //     .exec();
-  // }
+        {
+          $project: {
+            _id: 0,
+            id_driver: {
+              $toString: '$id_driver',
+            },
+            position: {
+              lat: {
+                $arrayElemAt: ['$position.coordinates', 1],
+              },
+              lng: {
+                $arrayElemAt: ['$position.coordinates', 0],
+              },
+            },
+            distance: 1,
+          },
+        },
+      ])
+      .exec();
+  }
 
   async removeByDriverId(idDriver: string) {
     const driverPosition = await this.driversPositionModel

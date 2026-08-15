@@ -21,7 +21,7 @@ export class DriversPositionController {
 
   @Post()
   create(@Body() createDriversPositionDto: CreateDriversPositionDto) {
-    return this.driversPositionService.create(createDriversPositionDto);
+    //    return this.driversPositionService.create(createDriversPositionDto);
   }
 
   @Get('nearby/:latitud/:longitud')

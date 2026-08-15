@@ -19,42 +19,42 @@ export class DriversPositionService {
     private readonly driversPositionModel: Model<DriversPositionDocument>,
   ) {}
 
-  async create(
-    dto: CreateDriversPositionDto,
-  ): Promise<DriversPositionDocument> {
-    try {
-      const driverPosition = await this.driversPositionModel
-        .findOneAndUpdate(
-          { id_driver: dto.id_driver },
-          {
-            $set: {
-              position: {
-                type: 'Point',
-                coordinates: [dto.lng, dto.lat],
-              },
-            },
-          },
-          {
-            upsert: true, // si no existe lo inserta caso contrario lo actualiza
-            new: true,
-            runValidators: true,
-            setDefaultsOnInsert: true,
-          },
-        )
-        .exec();
+  // async create(
+  //   dto: CreateDriversPositionDto,
+  // ): Promise<DriversPositionDocument> {
+  //   try {
+  //     const driverPosition = await this.driversPositionModel
+  //       .findOneAndUpdate(
+  //         { id_driver: dto.id_driver },
+  //         {
+  //           $set: {
+  //             position: {
+  //               type: 'Point',
+  //               coordinates: [dto.lng, dto.lat],
+  //             },
+  //           },
+  //         },
+  //         {
+  //           upsert: true, // si no existe lo inserta caso contrario lo actualiza
+  //           new: true,
+  //           runValidators: true,
+  //           setDefaultsOnInsert: true,
+  //         },
+  //       )
+  //       .exec();
 
-      if (!driverPosition) {
-        throw new NotFoundException(
-          'No se pudo guardar la posición del conductor',
-        );
-      }
+  //     if (!driverPosition) {
+  //       throw new NotFoundException(
+  //         'No se pudo guardar la posición del conductor',
+  //       );
+  //     }
 
-      return driverPosition;
-    } catch (error: unknown) {
-      this.handleDuplicateKey(error);
-      throw error;
-    }
-  }
+  //     return driverPosition;
+  //   } catch (error: unknown) {
+  //     this.handleDuplicateKey(error);
+  //     throw error;
+  //   }
+  // }
 
   async getNearbyDrivers(location: NearbyDriversDto) {
     return this.driversPositionModel

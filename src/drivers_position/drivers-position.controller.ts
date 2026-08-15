@@ -21,16 +21,16 @@ export class DriversPositionController {
 
   @Post()
   create(@Body() createDriversPositionDto: CreateDriversPositionDto) {
-    return this.driversPositionService.create(createDriversPositionDto);
+    //return this.driversPositionService.create(createDriversPositionDto);
   }
 
   @Get('nearby/:latitud/:longitud')
   getNearbyDrivers(@Param() location: NearbyDriversDto) {
-    return this.driversPositionService.getNearbyDrivers(location);
+   // return this.driversPositionService.getNearbyDrivers(location);
   }
 
   @Delete('driver/:idDriver')
   removeByDriverId(@Param('idDriver', ParseMongoIdPipe) idDriver: string) {
-    return this.driversPositionService.removeByDriverId(idDriver);
+   // return this.driversPositionService.removeByDriverId(idDriver);
   }
 }

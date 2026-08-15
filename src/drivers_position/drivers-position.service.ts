@@ -49,7 +49,7 @@ export class DriversPositionService {
 
       return driverPosition;
     } catch (error: unknown) {
-      this.handleDuplicateKey(error);
+      //this.handleDuplicateKey(error);
       throw error;
     }
   }

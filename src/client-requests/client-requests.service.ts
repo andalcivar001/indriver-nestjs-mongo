@@ -7,8 +7,6 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class ClientRequestsService extends Client {
-  API_KEY = 'AIzaSyAe7ENmBNhws08ml_9ikRYt7caOKVFsNic';
-
   constructor() {
     super();
   }
@@ -22,7 +20,7 @@ export class ClientRequestsService extends Client {
     const googleResponse = await this.distancematrix({
       params: {
         mode: TravelMode.driving,
-        key: this.API_KEY,
+        key: process.env.GOOGLE_API_KEY!,
         origins: [
           {
             lat: origin_lat,

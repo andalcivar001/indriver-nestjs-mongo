@@ -9,6 +9,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { DriversPositionModule } from './drivers_position/drivers-position.module';
 import { ClientRequestsModule } from './client-requests/client-requests.module';
+import { TimeAndDistanceValuesModule } from './time-and-distance-values/time-and-distance-values.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { ClientRequestsModule } from './client-requests/client-requests.module';
     SocketModule,
     DriversPositionModule,
     ClientRequestsModule,
+    TimeAndDistanceValuesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
